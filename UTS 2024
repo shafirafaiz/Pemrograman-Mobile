@@ -1,0 +1,181 @@
+import 'package:flutter/material.dart';
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Profil Fakultas UPN',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profil Fakultas UPN'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildFakultasSection(),
+            _buildProgramStudiSection(),
+            _buildProfileSection(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFakultasSection() {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'FAKULTAS ILMU KOMPUTER UPN "Veteran" Jawa Timur',
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            'Fakultas Ilmu Komputer (FIK) adalah Fakultas yang ketujuh yang dibentuk oleh UPN “Veteran” Jawa Timur yang diawali dengan pelantikan Dekan pertama pada bulan Agustus 2016 berdasarkan Keputusan Rektor No. 153/UN63/KP/2016 tanggal 18 Agustus 2016. FIK mengelola 2 (dua) program studi S1, yakni Teknik Informatika dan Sistem Informasi. Kedua program studi ini sebelumnya berada di bawah Fakultas Teknologi Industri (FTI), dimana program studi Teknik Informatika didirikan pada tahun 2003 dan Sistem Informasi pada tahun 2007.',
+            style: TextStyle(fontSize: 16.0),
+          ),
+          SizedBox(height: 16.0),
+          Row(
+            children: [
+              Text(
+                'Laman Web: ',
+                style: TextStyle(fontSize: 16.0),
+              ),
+              InkWell(
+                onTap: () {
+                  // Navigasi ke laman web fakultas
+                  // Ganti URL di bawah sesuai dengan URL sebenarnya
+                  // Contoh: https://fasilkom.upnjatim.ac.id/
+                  print('https://fasilkom.upnjatim.ac.id/');
+                },
+                child: Text(
+                  'https://fasilkom.upnjatim.ac.id/',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgramStudiSection() {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (var programStudi in [
+            'Sistem Informasi',
+            'Teknik Informatika',
+            'Data Sains',
+            'Bisnis Digital'
+          ])
+            GestureDetector(
+              onTap: () {
+                // Tampilkan dialog profil program studi
+                _showProdiProfileDialog(context, programStudi);
+              },
+              child: Card(
+                child: ListTile(
+                  leading: Image.asset(
+                    'assets/logo_upn.png',
+                    width: 48,
+                    height: 48,
+                  ),
+                  title: Text(programStudi),
+                  subtitle: Text('$programStudi desc'),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileSection() {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 50.0,
+            backgroundImage: AssetImage('assets/profile_picture.png'),
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            'Shafira Faiz Aulia Winanda',
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            '08 Juli 2004, Surabaya, Jl. Asem Jajar VI no. 5 Surabaya, 085951531264, 22082010044@student.upnjatim.ac.id\nhttps://github.com/shafirafaiz/UTS-Pemrograman-Mobile.git, S1,',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showProdiProfileDialog(BuildContext context, String programStudi) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Profil $programStudi'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Tambahkan detail profil program studi di sini
+                Text('Visi'),
+                Text('Misi'),
+                Text('Akreditasi'),
+                Text('Ketua Program Studi'),
+                Text('Dosen'),
+                Text('Laman Website Resmi'),
+                Text('Prestasi Mahasiswa (minimal 3)'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Tutup'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
